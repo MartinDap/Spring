@@ -24,7 +24,7 @@ public class Materiales implements Serializable{
     @Column(name = "mate_descri")
     String mateDescri;
 
-    @Column(name = "mate_mane")
+    @Column(name = "mate_name")
     String mateName;
 
     @ManyToOne //De muchos a uno
