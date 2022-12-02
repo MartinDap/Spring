@@ -3,9 +3,11 @@ package pe.edu.upeu.Spring.Controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import java.util.List;
+import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,17 +20,23 @@ import pe.edu.upeu.Spring.entity.Materiales;
 import pe.edu.upeu.Spring.service.MaterialesService;
 
 
+@CrossOrigin(origins = {"http://localhost:4200"})
 @RestController
-@RequestMapping("/material")
+@RequestMapping("/api/materiales")
 @Api(value = "Microservicios de gestion de materiales", description ="Microservicio de materiales")
 public class MaterialesController {
+    
     @Autowired
-    private MaterialesService materialesService;
+    MaterialesService materialesService;
 
     @ApiOperation(value="Lista de material")
-    @GetMapping("/all")
-    public List<Materiales> findAll() {
-        return materialesService.findAll();
+    @GetMapping
+    public ResponseEntity<?> findAll() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("success", true);
+        result.put("message", "Lista de materiales");
+        result.put("data", materialesService.findAll());
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @ApiOperation(value="Obtiene datos de una material")
@@ -38,21 +46,57 @@ public class MaterialesController {
         return ResponseEntity.ok(materiales);
     }
 
-    @ApiOperation(value="Elimina una material")
+        @ApiOperation(value = "Crea un Material")
+    @PostMapping
+    public ResponseEntity<?> save(@RequestBody Materiales materiales) {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("success", true);
+        result.put("message", "Programa registrado correctamente");
+        result.put("data", materialesService.save(materiales));
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Modifica un material")
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@PathVariable(value = "id") Long id, @RequestBody Materiales materiales) {
+        HashMap<String, Object> result = new HashMap<>();
+        Materiales data = materialesService.findById(id);
+        if (data == null) {
+            result.put("success", false);
+            result.put("message", "No existe registro con Id: " + id);
+            return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+        }
+        try {
+            materiales.setMateId(id);
+            materialesService.save(materiales);
+            result.put("success", true);
+            result.put("message", "Datos actualizados correctamente.");
+            result.put("data", materiales);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(new Exception(ex.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @ApiOperation(value = "Elimina un material")
     @DeleteMapping("/{id}")
-    public void deleteById(@PathVariable Long id) {
-        materialesService.deleteById(id);
-    }
+    public ResponseEntity<?> delete(@PathVariable(value = "id") Long id) {
+        HashMap<String, Object> result = new HashMap<>();
+        Materiales data = materialesService.findById(id);
+        if (data == null) {
+            result.put("success", false);
+            result.put("message", "No existe registro con id: " + id);
+            return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+        }
+        try {
+            materialesService.delete(data);
+            result.put("success", true);
+            result.put("message", "Se ha eliminado los datos del registro.");
+            return new ResponseEntity<>(result, HttpStatus.OK);
 
-    @ApiOperation(value="Crea una material")
-    @PostMapping("/save")
-    public Materiales save(@RequestBody Materiales materiales) {
-        return materialesService.save(materiales);
-    }
-
-    @ApiOperation(value="Modifica una material")
-    @PutMapping("/update")
-    public Materiales update(@RequestBody Materiales materiales) {
-        return materialesService.save(materiales);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(new Exception(ex.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
+

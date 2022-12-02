@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package pe.edu.upeu.Spring.Controller;
 
 import io.swagger.annotations.Api;
@@ -22,10 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pe.edu.upeu.Spring.entity.Programa;
 import pe.edu.upeu.Spring.service.ProgramaService;
 
-/**
- *
- * @author tpp
- */
+
 @CrossOrigin(origins = {"http://localhost:4200"})
 @RestController
 @RequestMapping("/api/programa")

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package pe.edu.upeu.Spring.entity;
 
 import javax.persistence.Column;
@@ -12,10 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Data;
 
-/**
- *
- * @author tpp
- */
+
 @Entity
 @Data
 @Table(name = "persona")
@@ -34,6 +27,9 @@ public class Persona {
 
     @Column(name = "pers_ap_materno")
     private String persApMaterno;
+    
+    @Column(name = "pers_dni")
+    private String persDni;
 
     @Column(name = "pers_celular")
     private String persCelular;
