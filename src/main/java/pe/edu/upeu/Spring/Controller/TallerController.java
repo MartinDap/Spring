@@ -41,8 +41,8 @@ public class TallerController {
     @ApiOperation(value = "Obtiene datos de un Taller")
     @GetMapping("/{id}")
     public ResponseEntity<Taller> findById(@PathVariable Long id) {
-        Taller persona = tallerService.findById(id);
-        return ResponseEntity.ok(persona);
+        Taller taller = tallerService.findById(id);
+        return ResponseEntity.ok(taller);
     }
 
     @ApiOperation(value = "Crea un Taller")
