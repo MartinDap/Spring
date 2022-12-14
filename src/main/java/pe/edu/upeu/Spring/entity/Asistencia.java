@@ -24,13 +24,13 @@ public class Asistencia implements Serializable{
     @Column(name = "estado_asis")
     String asisEsta;
 
-
+    
+    @ManyToOne //De muchos a uno
+    @JoinColumn(name = "pers_nombre")
+    private Persona persona;
+    
     @ManyToOne //De muchos a uno
     @JoinColumn(name = "tall_tema")
     private Taller taller;
-    
-    @ManyToOne //De muchos a uno
-    @JoinColumn(name = "tipe_persona")
-    private TipoPersona tipoPersona;
     
 }
