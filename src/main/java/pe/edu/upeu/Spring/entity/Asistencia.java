@@ -1,5 +1,6 @@
 package pe.edu.upeu.Spring.entity;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,21 +13,24 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "materiales")
-public class Materiales{
-
+@Table(name="asistencia")
+public class Asistencia implements Serializable{
+    
     @Id
-    @Column(name = "mate_id")
+    @Column(name = "asisten_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long mateId;
+    private Long asisId;
 
-    @Column(name = "mate_descri")
-    String mateDescri;
+    @Column(name = "estado_asis")
+    String asisEsta;
 
-    @Column(name = "mate_name")
-    String mateName;
 
     @ManyToOne //De muchos a uno
     @JoinColumn(name = "tall_tema")
     private Taller taller;
+    
+    @ManyToOne //De muchos a uno
+    @JoinColumn(name = "tipe_persona")
+    private TipoPersona tipoPersona;
+    
 }
